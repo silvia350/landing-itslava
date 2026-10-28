@@ -372,6 +372,15 @@
     /* =========================================================
        12. Pie
        ========================================================= */
+    /* Cierre: título y botón centrados sobre una fila de fotos del mismo tamaño */
+    .closing-section { background: var(--white); text-align: center; }
+    .closing-section .section-heading h2 { margin-bottom: 24px; }
+    .closing-section .button { box-shadow: none; }
+    .closing-photos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 44px; }
+    .closing-photo { aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius-md); background: var(--photo-bg); }
+    .closing-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .closing-photo.is-empty { border: 1.5px dashed var(--line-strong); background: var(--soft); }
+
     /* Igual que el pie de la tienda: logo y dos columnas de enlaces en los extremos, tipografía sencilla y mucho aire */
     .site-footer { background: var(--white); color: #6b6b6b; border-top: 1px solid var(--line); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
     .footer-inner { display: grid; grid-template-columns: auto auto; justify-content: space-between; gap: 40px 64px; padding: 44px 0 64px; }
@@ -725,6 +734,7 @@
       .faq-list summary { font-size: 15px; padding: 0 16px; }
       .faq-list details p { padding: 0 16px 18px; }
       .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px 24px; padding: 36px 0 48px; }
+      .closing-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 32px; }
       .footer-column { min-width: 0; }
 
       .tryon-toolbar { grid-template-columns: auto 1fr auto; gap: 6px; }
@@ -995,6 +1005,17 @@
             <p>Sí, tienes 14 días naturales desde que lo recibes, con el producto en perfectas condiciones y en su embalaje original. La devolución cuesta 6 € en península e Islas Baleares y 15 € para Europa e Islas Canarias. No se hacen cambios: se compra el artículo nuevo y se devuelve el anterior. <a href="#">Política de devoluciones</a>.</p>
           </details>
         </div>
+      </div>
+    </section>
+
+    <!-- ===================== CIERRE ===================== -->
+    <section class="section closing-section" id="cierre" aria-labelledby="closing-title">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <h2 id="closing-title">Encuentra tu bolso perfecto</h2>
+          <a class="button button-brand" href="#probador" data-open-tryon>Probar un bolso</a>
+        </div>
+        <div class="closing-photos reveal" id="closing-photos"></div>
       </div>
     </section>
   </main>
@@ -1528,6 +1549,19 @@ const COMMUNITY_PHOTOS = [
   { src: 'img/comunidad/clienta-7.webp', alt: 'Tres clientas, dos de ellas con el bolso Mauna Carey', focus: 'center 55%' },
   { src: 'img/comunidad/clienta-8.webp', alt: 'Clienta haciéndose una foto en el espejo con un bolso marrón al hombro', focus: 'center 65%' }
 ];
+
+/* Fotos de la sección de cierre (personas probándose un bolso), guardadas en img/cierre/.
+   Todas se muestran al mismo tamaño; con src vacío se ve un marco de reserva. */
+const CLOSING_PHOTOS = [
+  { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }
+];
+
+function renderClosing() {
+  $('#closing-photos').innerHTML = CLOSING_PHOTOS.map(photo => photo.src
+    ? `<figure class="closing-photo"><img src="${photo.src}" alt="${photo.alt}" loading="lazy"></figure>`
+    : '<figure class="closing-photo is-empty" aria-hidden="true"></figure>'
+  ).join('');
+}
 
 function renderCommunity() {
   $('#community-track').innerHTML = COMMUNITY_PHOTOS.map((photo, i) => photo.src
@@ -2828,6 +2862,7 @@ const TryOn = (() => {
    ===================================================================== */
 renderNewIn();
 renderCommunity();
+renderClosing();
 setupCarousel($('#community-track'), $('[data-community-scroll="-1"]'), $('[data-community-scroll="1"]'));
 setupHeader();
 setupNewsletter();
