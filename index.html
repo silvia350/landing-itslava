@@ -93,6 +93,7 @@
       font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--brand-deep);
     }
     .eyebrow::before { content: ""; width: 22px; height: 1px; background: currentColor; }
+    .eyebrow.is-muted { color: var(--muted); }
 
     .button {
       display: inline-flex; align-items: center; justify-content: center; gap: 12px;
@@ -816,9 +817,9 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-content">
-          <p class="eyebrow">The virtual try-on</p>
+          <p class="eyebrow is-muted">The virtual try-on</p>
           <h1 class="hero-title" id="hero-title">Encuentra tu <em>favorito</em></h1>
-          <p class="hero-copy">Tu estilo, tus preferencias y el bolso perfecto para ti. Pruébate la colección con la cámara, sobre una foto o en un maniquí 3D, y llévate el que más te guste.</p>
+          <p class="hero-copy">Tu estilo, tus preferencias y el bolso perfecto para ti. Descubre la colección y pruébate tus favoritos.</p>
           <div class="hero-actions">
             <a class="button button-brand" href="#probador" data-open-tryon>Probar un bolso <span class="arrow"><svg class="icon"><use href="#i-arrow-right"/></svg></span></a>
             <a class="button button-ghost" href="#como-funciona">Descubre cómo funciona</a>
