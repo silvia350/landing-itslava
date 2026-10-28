@@ -531,7 +531,7 @@
       position: relative; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-md); background: var(--photo-bg);
       box-shadow: inset 0 0 0 1px var(--line); transition: box-shadow .2s, transform .2s;
     }
-    .product-choice img { width: 100%; height: 100%; object-fit: contain; padding: 10%; }
+    .product-choice img { width: 100%; height: 100%; object-fit: contain; padding: 7%; }
     .product-choice:hover { transform: translateY(-2px); }
     .product-choice[aria-checked="true"] { box-shadow: inset 0 0 0 2px var(--brand-deep); }
     .product-choice span { position: absolute; left: 0; right: 0; bottom: 6px; font-size: 11px; font-weight: 700; text-align: center; }
@@ -630,8 +630,17 @@
     .totals strong { font-size: 20px; }
     .drawer-foot .note { margin: 6px 0 14px; font-size: 12.5px; color: var(--muted); }
     .drawer-foot .button { width: 100%; }
-    .secure { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 10px; font-size: 12px; color: var(--muted); }
-    .secure .icon { width: 14px; height: 14px; }
+
+    /* Aviso de compra finalizada (demostración: no hay pago real) */
+    .order-dialog {
+      margin: auto; width: min(400px, 100% - 32px); padding: 36px 28px 28px; border: 0; border-radius: var(--radius-md);
+      background: var(--white); color: var(--ink); box-shadow: var(--shadow-lg); text-align: center;
+    }
+    .order-dialog::backdrop { background: rgb(28 23 25 / .45); }
+    .order-dialog .order-icon { display: grid; place-items: center; width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 50%; background: var(--brand-tint); color: var(--brand-deep); }
+    .order-dialog .order-icon .icon { width: 28px; height: 28px; }
+    .order-dialog h2 { font-family: var(--serif); font-weight: 600; font-variation-settings: "SOFT" 0, "WONK" 0; font-size: 30px; line-height: 1.1; color: var(--brand); }
+    .order-dialog .button { width: 100%; margin-top: 24px; }
 
     /* Aviso flotante */
     .toast {
@@ -1187,15 +1196,23 @@
   </div>
 </dialog>
 
+<!-- ===================== COMPRA FINALIZADA (sin pago real) ===================== -->
+<dialog class="order-dialog" id="order-dialog" aria-labelledby="order-title">
+  <form method="dialog">
+    <span class="order-icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>
+    <h2 id="order-title">Compra finalizada</h2>
+    <button class="button button-brand" type="submit">Cerrar</button>
+  </form>
+</dialog>
+
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toast-text"></span><button type="button" id="toast-action" hidden></button></div>
 
 <script type="module">
 /* =====================================================================
    1. TIENDA Y CATÁLOGO
    ---------------------------------------------------------------------
-   Precios, textos e identificadores de variante proceden de la tienda
-   Shopify de it's lava (itslava.es). El checkout usa los "cart permalinks"
-   de Shopify: itslava.es/cart/<variante>:<cantidad>,...
+   Landing de demostración: no hay pasarela de pago ni enlaces a la tienda
+   real. «Finalizar compra» solo muestra un aviso de compra finalizada.
 
    Por convención, cada color usa:
      img/bolsos/<id>.png            foto de producto
@@ -1204,10 +1221,8 @@
    Los recortes y los .glb se generan con herramientas/generar_modelos_3d.py.
    ===================================================================== */
 const STORE = {
-  url: 'https://itslava.es',
-  freeShippingFrom: 150,      // envío gratis en península (política de itslava.es)
-  shippingPeninsula: 5,
-  instagram: 'https://www.instagram.com/its__lava/'
+  freeShippingFrom: 150,      // envío gratis en península
+  shippingPeninsula: 5
 };
 
 /* Formas de llevar un bolso que entiende el probador */
@@ -1219,11 +1234,11 @@ const COLLECTION = [
     wear: ['shoulder', 'hand'],
     dimensions: null,           // pendiente de recibir las medidas oficiales
     variants: [
-      { id: 'bailey-cherry', name: 'Bailey Cherry', swatch: '#901b2b', shopify: { handle: 'maxi-bailey-cherry', variant: 53141004484935 },
+      { id: 'bailey-cherry', name: 'Bailey Cherry', swatch: '#901b2b',
         description: ['Bailey es un bolso <em>bowling</em> con gran capacidad. Cierre completo con cremallera y un bolsillo, también con cremallera interior.', 'Con una correa cómoda para el hombro y dos enganches en el asa perfectos para que personalices tu bolso con tus charms favoritos.'] },
-      { id: 'bailey-navy', name: 'Bailey Navy', swatch: '#3e4d62', shopify: { handle: 'maxi-bailey-navy', variant: 53141199487303 },
+      { id: 'bailey-navy', name: 'Bailey Navy', swatch: '#3e4d62',
         description: ['Bailey es un bolso <em>bowling</em> con gran capacidad. Cierre completo con cremallera y un bolsillo, también con cremallera interior.', 'Con una correa cómoda para el hombro y dos enganches en el asa perfectos para que personalices tu bolso con tus charms favoritos.'] },
-      { id: 'bailey-pink', name: 'Bailey Pink', swatch: '#dc9fc6', shopify: { handle: 'maxi-bailey-pink', variant: 53141207744839 },
+      { id: 'bailey-pink', name: 'Bailey Pink', swatch: '#dc9fc6',
         description: ['El nuevo Maxi Bailey es un bolso <em>bowling</em> con gran capacidad. Tiene un cierre completo con cremallera y un bolsillo, también con cremallera interior.', 'Con una correa muy cómoda para el hombro y dos enganches en el asa perfectos para que personalices tu bolso con tus charms favoritos.'] }
     ]
   },
@@ -1232,13 +1247,12 @@ const COLLECTION = [
     wear: ['shoulder', 'hand'],
     dimensions: { label: '37 × 30 × 20 cm', detail: 'Largo 37 cm · alto 30 cm · ancho 20 cm' },
     variants: [
-      { id: 'mauna-carey', name: 'Mauna Carey', price: 98,   // precio actual en itslava.es
+      { id: 'mauna-carey', name: 'Mauna Carey', price: 98,   // precio rebajado
         swatch: 'radial-gradient(circle at 30% 35%, #8a5a2b 0 18%, transparent 20%), radial-gradient(circle at 70% 65%, #6b4423 0 15%, transparent 17%), #1f1a17',
-        shopify: { handle: 'mauna-carey', variant: 49118168875335 },
         description: ['Bolso estilo <em>shopper</em> todoterreno, cuenta con dos asas de 150 cm regulables con un nudo en cada lateral que se pueden quitar y sustituir por otras.', 'En el interior lleva un bolsillo con cremallera mientras que en el exterior cuenta con una rendija para introducir el asa de la maleta con otro bolsillo con cremallera.', 'De material sintético impermeable. Debido al material de fabricación las esquinas de la base pueden dañarse levemente con el uso.'] },
-      { id: 'mauna-chain-black', name: 'Mauna Chain Black', type: 'Bolso shopper', swatch: '#262626', shopify: { handle: 'mauna-chain-black', variant: 54220825100615 },
+      { id: 'mauna-chain-black', name: 'Mauna Chain Black', type: 'Bolso shopper', swatch: '#262626',
         description: ['¡Nuevo Mauna Chain!', 'El bolso Mauna estilo <em>shopper</em> cuenta con un asa de cadena con acolchado en la parte superior para una mayor comodidad. Con un cierre de botón imantado.', 'En el interior lleva un bolsillo con cremallera mientras que en el exterior cuenta con una rendija para introducir el asa de la maleta con otro bolsillo con cremallera.'] },
-      { id: 'mauna-chain', name: 'Mauna Chain', swatch: '#53403e', shopify: { handle: 'mauna-chain-brown', variant: 54221006405959 },
+      { id: 'mauna-chain', name: 'Mauna Chain', swatch: '#53403e',
         description: ['¡Nuevo Mauna Chain!', 'El bolso Mauna estilo <em>shopper</em> cuenta con un asa de cadena con acolchado en la parte superior para una mayor comodidad. Con un cierre de botón imantado.', 'En el interior lleva un bolsillo con cremallera mientras que en el exterior cuenta con una rendija para introducir el asa de la maleta con otro bolsillo con cremallera.'] }
     ]
   },
@@ -1247,11 +1261,11 @@ const COLLECTION = [
     wear: ['cross', 'shoulder'],
     dimensions: { label: '31 × 20 × 13 cm', detail: '31 × 20 × 13 cm' },
     variants: [
-      { id: 'musa-gold', name: 'Musa Gold', swatch: '#d6c8a6', shopify: { handle: 'musa-melted-gold', variant: 53139011928391 },
+      { id: 'musa-gold', name: 'Musa Gold', swatch: '#d6c8a6',
         description: ['Bolso bandolera vegano en color dorado brillante. Con hebilla en metal dorado grabada con logo de it\'s lava. Uno de los extremos de la correa está fijado al bolso mientras que el otro extremo tiene una hebilla que facilita la regulación del tamaño. Puedes llevarlo cruzado como bandolera o al hombro.', 'Este bolso además cuenta con un bolsillo interior con cremallera.'] },
-      { id: 'musa-red', name: 'Musa Red', swatch: '#9b2a24', shopify: { handle: 'musa-red', variant: 50310991053127 },
+      { id: 'musa-red', name: 'Musa Red', swatch: '#9b2a24',
         description: ['El Musa Red es un bolso vegano rojo que aporta energía y color a cualquier outfit. Su formato mediano ofrece el equilibrio perfecto entre capacidad y ligereza, con espacio suficiente para tus imprescindibles sin sacrificar comodidad.', 'Confeccionado en material vegano resistente y suave, destaca por su acabado rojo intenso que no pasa desapercibido. Además, su correa ajustable te permite adaptarlo a distintas alturas, haciendo de este modelo una opción cómoda y versátil para cualquier momento del día.'] },
-      { id: 'musa-tricolor-garnet', name: 'Musa Tricolor Garnet', swatch: 'linear-gradient(90deg, #e7b8c4 0 33%, #6e2a3a 33% 66%, #9a8466 66%)', shopify: { handle: 'musa-tricolor-garnet', variant: 54220738658631 },
+      { id: 'musa-tricolor-garnet', name: 'Musa Tricolor Garnet', swatch: 'linear-gradient(90deg, #e7b8c4 0 33%, #6e2a3a 33% 66%, #9a8466 66%)',
         description: ['Bolso de hombro en napa vegana en tres colores. Con nuestra nueva hebilla en metal dorado con grabado con el logo de it\'s lava. Uno de los extremos de la correa está fijado al bolso mientras que el otro extremo tiene una hebilla que facilita la regulación del tamaño. Ahora con un bolsillo interior con cremallera.', 'Puedes llevarlo cruzado como bandolera o al hombro.'] }
     ]
   },
@@ -1260,11 +1274,11 @@ const COLLECTION = [
     wear: ['shoulder'],
     dimensions: { label: '36 × 30 × 11 cm', detail: '36 × 30 × 11 cm' },
     variants: [
-      { id: 'arenal-silver', name: 'Arenal Silver', swatch: '#c9c8c4', shopify: { handle: 'arenal-melted-silver', variant: 52601833718087 },
+      { id: 'arenal-silver', name: 'Arenal Silver', swatch: '#c9c8c4',
         description: ['Bolso shopper en plata brillante con asa de hombro, con fornituras plateadas.', 'Tiene un bolsillo extra en el interior con cremallera y dos anillas para colgar tus charms o añadir una correa diferente.'] },
-      { id: 'arenal-grey', name: 'Arenal Grey', swatch: '#4d4c4a', shopify: { handle: 'arenal-melted-grey', variant: 54220427166023 },
+      { id: 'arenal-grey', name: 'Arenal Grey', swatch: '#4d4c4a',
         description: ['Bolso shopper en gris desgastado con asa de hombro, con fornituras plateadas.', 'Tiene un bolsillo extra en el interior con cremallera y dos anillas para colgar tus charms o añadir una correa diferente.'] },
-      { id: 'arenal-red', name: 'Arenal Red', swatch: '#9d292b', shopify: { handle: 'arenal-melted-red', variant: 54220416450887 },
+      { id: 'arenal-red', name: 'Arenal Red', swatch: '#9d292b',
         description: ['Bolso shopper en rojo brillante con asa de hombro, con fornituras plateadas.', 'Tiene un bolsillo extra en el interior con cremallera y dos anillas para colgar tus charms o añadir una correa diferente.'] }
     ]
   }
@@ -1280,7 +1294,6 @@ const PRODUCTS = COLLECTION.flatMap(family => family.variants.map(v => ({
   color: v.name.replace(family.name, '').trim(),
   type: v.type ?? family.type,
   price: v.price ?? family.price,
-  url: `${STORE.url}/products/${v.shopify.handle}`,
   images: { catalog: `img/bolsos/${v.id}.png`, cutout: `img/bolsos/recortes/${v.id}.png` },
   model: `modelos/${v.id}.glb`
 })));
@@ -1340,7 +1353,7 @@ const Store = (() => {
       emit();
       return favs.includes(id);
     },
-    checkoutURL: () => `${STORE.url}/cart/${cart.map(i => `${getProduct(i.id).shopify.variant}:${i.qty}`).join(',')}`,
+    clear() { cart = []; emit(); },
     subscribe(fn) { listeners.add(fn); fn(); }
   };
 })();
@@ -1429,8 +1442,7 @@ const Drawer = (() => {
       foot.innerHTML = `
         <div class="totals"><span>Subtotal</span><strong>${formatPrice(subtotal)}</strong></div>
         <p class="note">Impuestos incluidos. Los gastos de envío se calculan al finalizar la compra.</p>
-        <a class="button button-brand" href="${Store.checkoutURL()}">Finalizar compra <span class="arrow">${icon('arrow-right')}</span></a>
-        <p class="secure">${icon('lock')}Pago seguro en itslava.es</p>`;
+        <button class="button button-brand" type="button" data-checkout>Finalizar compra <span class="arrow">${icon('arrow-right')}</span></button>`;
     } else {
       foot.hidden = true;
       body.innerHTML = Store.favs.length
@@ -1445,6 +1457,7 @@ const Drawer = (() => {
     const tabBtn = t.closest('[data-tab]');
     if (tabBtn) { tab = tabBtn.dataset.tab; render(); return; }
     if (t.closest('[data-close-drawer]')) return dialog.close();
+    if (t.closest('[data-checkout]')) { dialog.close(); Store.clear(); return $('#order-dialog').showModal(); }
     const qty = t.closest('[data-qty]');
     if (qty) { const item = Store.cart.find(i => i.id === qty.dataset.qty); Store.setQty(item.id, item.qty + Number(qty.dataset.delta)); return; }
     const remove = t.closest('[data-remove]');
@@ -2221,7 +2234,7 @@ const TryOn = (() => {
   function renderPicker() {
     els.picker.innerHTML = COLLECTION.map(f => `
       <button class="product-choice" type="button" role="radio" aria-checked="false" data-family="${f.id}" aria-label="${f.name}">
-        <img src="${getProduct(f.variants[0].id).images.catalog}" alt="" loading="lazy">
+        <img src="${getProduct(f.variants[0].id).images.cutout}" alt="" loading="lazy">
       </button>`).join('');
   }
 
@@ -2230,7 +2243,7 @@ const TryOn = (() => {
     $$('.product-choice', els.picker).forEach(b => {
       const on = b.dataset.family === f.id;
       b.setAttribute('aria-checked', String(on));
-      if (on) $('img', b).src = p.images.catalog;
+      if (on) $('img', b).src = p.images.cutout;
     });
     els.family.textContent = f.name;
     els.variant.textContent = p.name;
@@ -2244,7 +2257,7 @@ const TryOn = (() => {
       <button class="chip" type="button" role="radio" aria-checked="${c === state.carry}" data-carry="${c}">${CARRY[c]}</button>`).join('');
     els.sizeRow.hidden = !f.dimensions;
     els.size.textContent = f.dimensions?.detail || '';
-    els.legal.innerHTML = `Modelo 3D creado a partir de la foto de producto: el frontal es fiel; los laterales y la parte trasera son aproximados. La prueba es orientativa y no simula cómo cae el bolso sobre tu ropa. <a href="${p.url}" target="_blank" rel="noopener" style="color:var(--brand-deep);text-decoration:underline">Ver en itslava.es ↗</a>`;
+    els.legal.innerHTML = `Modelo 3D creado a partir de la foto de producto: el frontal es fiel; los laterales y la parte trasera son aproximados. La prueba es orientativa y no simula cómo cae el bolso sobre tu ropa.`;
     els.fav.dataset.fav = p.id;
     const subtotal = Store.subtotal();
     const inCart = Store.cart.some(i => i.id === p.id);
