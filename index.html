@@ -333,16 +333,21 @@
     /* =========================================================
        10. La comunidad
        ========================================================= */
-    .community { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 64px; align-items: center; }
-    .community-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-    .community-grid a { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-md); background: var(--photo-bg); }
-    .community-grid a:nth-child(2) { transform: translateY(28px); }
-    .community-grid a:nth-child(5) { transform: translateY(28px); }
-    .community-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
-    .community-grid img.contain { object-fit: contain; padding: 10%; }
-    .community-grid a:hover img { transform: scale(1.05); }
-    .community-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-    .handle { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; font-size: 15px; font-weight: 600; color: var(--brand-deep); }
+    .community-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
+    .community-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+    /* Carrusel de fotos de clientas: 4 fotos cuadradas por vista */
+    .community-track {
+      display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 48px) / 4); gap: 16px;
+      margin-top: 40px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none;
+    }
+    .community-track::-webkit-scrollbar { display: none; }
+    .community-photo { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-md); background: var(--photo-bg); scroll-snap-align: start; }
+    .community-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .community-photo.is-empty {
+      display: grid; place-content: center; justify-items: center; gap: 8px;
+      border: 1.5px dashed var(--line-strong); background: var(--soft); color: var(--muted); font-size: 13px; font-weight: 600;
+    }
+    .community-photo.is-empty .icon { width: 28px; height: 28px; }
 
     /* =========================================================
        11. Preguntas frecuentes
@@ -673,7 +678,8 @@
 
       .value-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .new-in-track { grid-auto-columns: calc(50% - 12px); }
-      .newsletter-grid, .community, .faq-grid { grid-template-columns: 1fr; gap: 40px; }
+      .newsletter-grid, .faq-grid { grid-template-columns: 1fr; gap: 40px; }
+      .community-track { grid-auto-columns: calc((100% - 32px) / 3); }
       .footer-top { grid-template-columns: 1fr 1fr; }
       .footer-brand { grid-column: 1 / -1; }
 
@@ -708,13 +714,14 @@
       .value-grid { grid-template-columns: 1fr; margin-top: 40px; }
       .steps-grid { grid-template-columns: 1fr; margin-top: 40px; gap: 36px; }
       .new-in-header { align-items: flex-start; }
-      .carousel-controls { display: none; }
+      .new-in-section .carousel-controls { display: none; }
       .new-in-track { grid-auto-columns: 82%; gap: 14px; margin-top: 32px; }
       .quick-try { display: none; }
       .newsletter { padding: 52px 0; }
       .input-row { flex-direction: column; gap: 8px; }
       .input-row input, .input-row .button { border-radius: var(--radius-btn); }
-      .community-grid a:nth-child(2), .community-grid a:nth-child(5) { transform: none; }
+      .community-header { align-items: flex-start; flex-direction: column; gap: 20px; }
+      .community-track { grid-auto-columns: calc((100% - 12px) / 2); gap: 12px; margin-top: 28px; }
       .faq-list summary { font-size: 15px; padding: 0 16px; }
       .faq-list details p { padding: 0 16px 18px; }
       .footer-cta { flex-direction: column; align-items: flex-start; padding: 56px 0 40px; }
@@ -945,18 +952,21 @@
 
     <!-- ===================== LA COMUNIDAD ===================== -->
     <section class="section social-section" id="comunidad" aria-labelledby="social-title">
-      <div class="container community">
-        <div class="section-heading reveal">
-          <p class="eyebrow">#itslava</p>
-          <h2 id="social-title">La comunidad <em>it's lava</em></h2>
-          <p class="section-copy">Comparte tu prueba con la etiqueta #itslava y descubre cómo lleva la comunidad cada modelo.</p>
-          <a class="handle" href="https://www.instagram.com/its__lava/" target="_blank" rel="noopener"><svg class="icon"><use href="#i-instagram"/></svg>@its__lava</a>
-          <div class="community-actions">
-            <a class="button" href="https://www.instagram.com/its__lava/" target="_blank" rel="noopener">Seguir en Instagram</a>
-            <a class="button button-ghost" href="#probador" data-open-tryon>Hacer mi prueba</a>
+      <div class="container">
+        <div class="community-header reveal">
+          <div class="section-heading">
+            <h2 id="social-title">#WeWereLava</h2>
+            <p class="section-copy">Así llevan nuestras clientas sus bolsos favoritos. Comparte tu look y forma parte de la comunidad.</p>
+            <div class="community-actions">
+              <a class="button button-ghost" href="#probador" data-open-tryon>Hacer mi prueba</a>
+            </div>
+          </div>
+          <div class="carousel-controls" role="group" aria-label="Navegar por las fotos de la comunidad">
+            <button type="button" data-community-scroll="-1" aria-label="Ver las fotos anteriores"><svg class="icon"><use href="#i-arrow-left"/></svg></button>
+            <button type="button" data-community-scroll="1" aria-label="Ver las siguientes fotos"><svg class="icon"><use href="#i-arrow-right"/></svg></button>
           </div>
         </div>
-        <div class="community-grid reveal" id="community-grid"></div>
+        <div class="community-track reveal" id="community-track"></div>
       </div>
     </section>
 
@@ -1516,22 +1526,19 @@ function renderNewIn() {
     </article>`).join('');
 }
 
+/* Fotos de clientas (#WeWereLava). Para añadir una foto, guárdala en img/comunidad/
+   y escribe su ruta en src, p. ej. { src: 'img/comunidad/clienta-1.jpg', alt: 'Clienta con el bolso Bailey Pink' }.
+   Mientras src esté vacío se muestra un marco cuadrado de reserva. */
+const COMMUNITY_PHOTOS = [
+  { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' },
+  { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }
+];
+
 function renderCommunity() {
-  const tiles = [
-    { img: 'img/hero-probador.webp', alt: 'Probador virtual de it\'s lava con el bolso rosa', href: STORE.instagram },
-    { product: 'bailey-pink' },
-    { img: 'img/como-activa-tu-camara.webp', alt: 'Chica probándose un bolso con la cámara del móvil', href: STORE.instagram },
-    { product: 'musa-tricolor-garnet' },
-    { img: 'img/como-descubre-tu-favorito.webp', alt: 'Chica rodeada de tarjetas con bolsos de la colección', href: STORE.instagram },
-    { product: 'arenal-silver' }
-  ];
-  $('#community-grid').innerHTML = tiles.map(t => {
-    if (t.product) {
-      const p = getProduct(t.product);
-      return `<a href="#probador=${p.id}" data-open-tryon="${p.id}" aria-label="Probarme ${p.name}"><img class="contain" src="${p.images.catalog}" alt="" loading="lazy"></a>`;
-    }
-    return `<a href="${t.href}" target="_blank" rel="noopener" aria-label="Ver it's lava en Instagram"><img src="${t.img}" alt="${t.alt}" loading="lazy"></a>`;
-  }).join('');
+  $('#community-track').innerHTML = COMMUNITY_PHOTOS.map((photo, i) => photo.src
+    ? `<figure class="community-photo"><img src="${photo.src}" alt="${photo.alt}" loading="lazy"></figure>`
+    : `<figure class="community-photo is-empty" aria-label="Espacio para la foto ${i + 1}">${icon('camera')}<span>Foto ${i + 1}</span></figure>`
+  ).join('');
 }
 
 function setupCarousel(track, prevBtn, nextBtn) {
@@ -2826,6 +2833,7 @@ const TryOn = (() => {
    ===================================================================== */
 renderNewIn();
 renderCommunity();
+setupCarousel($('#community-track'), $('[data-community-scroll="-1"]'), $('[data-community-scroll="1"]'));
 setupHeader();
 setupNewsletter();
 setupReveal();
