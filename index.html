@@ -222,21 +222,22 @@
        6. Una nueva perspectiva
        ========================================================= */
     .value-intro { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
-    .value-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 48px; }
+    .value-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 48px; }
+    /* Cada tarjeta ocupa 3 filas compartidas (icono, título, texto): los párrafos empiezan a la misma altura */
     .value-card {
-      position: relative; padding: 30px 26px 32px; border-radius: var(--radius);
+      position: relative; display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 0; align-content: start;
+      padding: 22px 20px 24px; border-radius: var(--radius-md);
       background: var(--soft); border: 1px solid var(--line); transition: transform .3s var(--ease), box-shadow .3s var(--ease), background .3s;
     }
     .value-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: var(--white); }
-    .item-number { position: absolute; top: 24px; right: 24px; font-size: 12px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
     .value-icon {
-      display: grid; place-items: center; width: 56px; height: 56px; margin-bottom: 56px;
-      border-radius: 16px; background: var(--white); color: var(--brand-deep); box-shadow: var(--shadow-sm);
+      display: grid; place-items: center; width: 46px; height: 46px; margin-bottom: 16px;
+      border-radius: 12px; background: var(--white); color: var(--brand-deep); box-shadow: var(--shadow-sm);
     }
-    .value-icon .icon { width: 26px; height: 26px; }
-    .value-card h3 { font-size: 20px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25; margin-bottom: 10px; }
+    .value-icon .icon { width: 22px; height: 22px; }
+    .value-card h3 { align-self: end; font-size: 18px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25; margin-bottom: 8px; }
     .value-card h3::first-letter { text-transform: uppercase; }
-    .value-card p { font-size: 15px; line-height: 1.6; color: var(--muted); }
+    .value-card p { font-size: 15px; line-height: 1.55; color: var(--muted); text-align: left; }
 
     /* =========================================================
        7. Cómo funciona
@@ -702,7 +703,6 @@
       .section { padding: 56px 0; }
       .value-intro { flex-direction: column; align-items: flex-start; }
       .value-grid { grid-template-columns: 1fr; margin-top: 40px; }
-      .value-icon { margin-bottom: 28px; }
       .steps-grid { grid-template-columns: 1fr; margin-top: 40px; gap: 36px; }
       .new-in-header { align-items: flex-start; }
       .carousel-controls { display: none; }
@@ -845,35 +845,31 @@
       <div class="container">
         <div class="value-intro reveal">
           <div class="section-heading">
-            <p class="eyebrow">Descubre el probador virtual</p>
+            <p class="eyebrow is-muted">Descubre el probador virtual</p>
             <h2 id="value-title">Una nueva <em>perspectiva</em></h2>
             <p class="section-copy">Explora diferentes modelos, visualiza cómo quedan contigo y encuentra el que mejor encaja con tu estilo.</p>
           </div>
         </div>
         <div class="value-grid">
           <article class="value-card reveal">
-            <span class="item-number">01</span>
             <div class="value-icon" aria-hidden="true"><svg class="icon"><use href="#i-camera"/></svg></div>
             <h3>visualización personalizada</h3>
             <p>Descubre cómo queda cada bolso sobre tu propia imagen, en directo con la cámara o con una foto.</p>
           </article>
           <article class="value-card reveal">
-            <span class="item-number">02</span>
             <div class="value-icon" aria-hidden="true"><svg class="icon"><use href="#i-palette"/></svg></div>
             <h3>variedad de modelos</h3>
             <p>Cuatro modelos y doce colores. Cambia de uno a otro al instante y compara tus favoritos.</p>
           </article>
           <article class="value-card reveal">
-            <span class="item-number">03</span>
             <div class="value-icon" aria-hidden="true"><svg class="icon"><use href="#i-device"/></svg></div>
             <h3>sin descargas</h3>
-            <p>Accede al probador directamente desde el navegador, sin instalar ninguna aplicación.</p>
+            <p>Accede al probador directamente desde el navegador.</p>
           </article>
           <article class="value-card reveal">
-            <span class="item-number">04</span>
             <div class="value-icon" aria-hidden="true"><svg class="icon"><use href="#i-heart"/></svg></div>
             <h3>una elección más personal</h3>
-            <p>Mira el tamaño real en el maniquí 3D, guarda tus favoritos y compra con más seguridad.</p>
+            <p>Encuentra el modelo que mejor encaja contigo.</p>
           </article>
         </div>
       </div>
