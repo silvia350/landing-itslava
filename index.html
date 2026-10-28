@@ -373,22 +373,18 @@
     /* =========================================================
        12. Pie
        ========================================================= */
-    .site-footer { background: var(--ink); color: rgb(255 255 255 / .78); }
-    .footer-cta { display: flex; justify-content: space-between; align-items: center; gap: 32px; padding: 72px 0 56px; border-bottom: 1px solid rgb(255 255 255 / .12); }
-    .footer-cta h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(34px, 4vw, 54px); line-height: 1.02; color: var(--white); max-width: 640px; }
-    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 56px 0; }
-    .footer-brand img { width: 128px; filter: brightness(0) invert(1); }
-    .footer-brand p { margin-top: 18px; font-size: 14px; max-width: 300px; }
-    .footer-column { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; font-size: 14px; }
-    .footer-column strong { margin-bottom: 6px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--white); }
-    .footer-column a { transition: color .2s; }
-    .footer-column a:hover { color: var(--white); }
+    .site-footer { background: var(--white); color: var(--ink-2); border-top: 1px solid var(--line); }
+    .footer-cta { display: flex; justify-content: space-between; align-items: center; gap: 32px; padding: 60px 0 44px; border-bottom: 1px solid var(--line); }
+    .footer-cta h2 { font-family: var(--serif); font-weight: 600; font-variation-settings: "SOFT" 0, "WONK" 0; font-size: clamp(32px, 3.8vw, 50px); line-height: 1.05; letter-spacing: -.015em; color: var(--brand); max-width: 640px; }
+    .footer-top { padding: 44px 0; }
+    .footer-brand img { width: 128px; filter: brightness(0); }
+    .footer-brand p { margin-top: 18px; font-size: 14px; max-width: 300px; color: var(--muted); }
     .footer-bottom {
       display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 64px;
-      border-top: 1px solid rgb(255 255 255 / .12); font-size: 12.5px; color: rgb(255 255 255 / .55);
+      border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted);
     }
     .payments { display: flex; flex-wrap: wrap; gap: 6px; }
-    .payments span { padding: 4px 8px; border-radius: 6px; border: 1px solid rgb(255 255 255 / .18); font-size: 11px; font-weight: 600; color: rgb(255 255 255 / .7); }
+    .payments span { padding: 4px 8px; border-radius: 4px; border: 1px solid var(--line-strong); font-size: 11px; font-weight: 600; color: var(--muted); }
 
     /* =========================================================
        13. Probador virtual (diálogo a pantalla completa)
@@ -680,8 +676,6 @@
       .new-in-track { grid-auto-columns: calc(50% - 12px); }
       .newsletter-grid, .faq-grid { grid-template-columns: 1fr; gap: 40px; }
       .community-track { grid-auto-columns: calc((100% - 32px) / 3); }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .footer-brand { grid-column: 1 / -1; }
 
       /* Probador en tableta / móvil: imagen arriba, producto debajo */
       .tryon { overflow-y: auto; }
@@ -724,8 +718,8 @@
       .community-track { grid-auto-columns: calc((100% - 12px) / 2); gap: 12px; margin-top: 28px; }
       .faq-list summary { font-size: 15px; padding: 0 16px; }
       .faq-list details p { padding: 0 16px 18px; }
-      .footer-cta { flex-direction: column; align-items: flex-start; padding: 56px 0 40px; }
-      .footer-top { gap: 36px 24px; padding: 40px 0; }
+      .footer-cta { flex-direction: column; align-items: flex-start; padding: 44px 0 32px; }
+      .footer-top { padding: 32px 0; }
 
       .tryon-toolbar { grid-template-columns: auto 1fr auto; gap: 6px; }
       .mode-switch { justify-self: center; }
@@ -1008,34 +1002,17 @@
   <footer class="site-footer">
     <div class="container footer-cta">
       <h2>Pruébatelo antes de llevártelo.</h2>
-      <a class="button button-light" href="#probador" data-open-tryon>Abrir el probador <span class="arrow" style="background:var(--brand-tint)"><svg class="icon"><use href="#i-arrow-right"/></svg></span></a>
+      <a class="button" href="#probador" data-open-tryon>Abrir el probador <span class="arrow"><svg class="icon"><use href="#i-arrow-right"/></svg></span></a>
     </div>
     <div class="container footer-top">
       <div class="footer-brand">
         <img src="img/logo-its-lava.webp" alt="it's lava" width="554" height="213">
         <p>Prueba. Compara. Elige con confianza.</p>
       </div>
-      <div class="footer-column">
-        <strong>Contacto</strong>
-        <a href="mailto:hola@itslava.es">hola@itslava.es</a>
-        <a href="https://itslava.es/pages/nuestras-tiendas" target="_blank" rel="noopener">Puntos de venta</a>
-        <a href="https://itslava.es" target="_blank" rel="noopener">Tienda online</a>
-      </div>
-      <div class="footer-column">
-        <strong>Legal</strong>
-        <a href="https://itslava.es/pages/politica-de-privacidad" target="_blank" rel="noopener">Privacidad</a>
-        <a href="https://itslava.es/pages/politica-de-cookies" target="_blank" rel="noopener">Cookies</a>
-        <a href="https://itslava.es/pages/condiciones-generales-de-contratacion" target="_blank" rel="noopener">Condiciones</a>
-        <a href="https://itslava.es/pages/new-politica-de-envio-y-devoluciones" target="_blank" rel="noopener">Envíos y devoluciones</a>
-      </div>
-      <div class="footer-column">
-        <strong>Síguenos</strong>
-        <a href="https://www.instagram.com/its__lava/" target="_blank" rel="noopener">Instagram ↗</a>
-      </div>
     </div>
     <div class="container footer-bottom">
       <span>© 2026 it's lava</span>
-      <div class="payments" aria-label="Métodos de pago aceptados en itslava.es">
+      <div class="payments" aria-label="Métodos de pago">
         <span>Visa</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span><span>Bizum</span><span>Shop Pay</span>
       </div>
     </div>
