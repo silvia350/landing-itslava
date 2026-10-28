@@ -386,8 +386,8 @@
     .footer-column { min-width: 180px; }
     .footer-column h2 { margin-bottom: 22px; font-size: 13px; font-weight: 600; line-height: 1.2; color: #111; }
     .footer-column ul { display: grid; gap: 13px; }
-    .footer-column a { font-size: 12.5px; line-height: 1.2; color: #6b6b6b; transition: color .2s; }
-    .footer-column a:hover { color: #111; }
+    /* Texto plano: sin efectos de enlace (ni hover, ni subrayado, ni cursor de mano) */
+    .footer-column li { font-size: 12.5px; line-height: 1.2; color: #6b6b6b; cursor: default; }
 
     /* =========================================================
        13. Probador virtual (diálogo a pantalla completa)
@@ -1020,26 +1020,26 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="footer-logo"><img src="img/logo-its-lava.webp" alt="it's lava" width="554" height="213"></div>
-      <nav class="footer-column" aria-labelledby="footer-legal">
+      <div class="footer-column">
         <h2 id="footer-legal">It's Lava</h2>
         <ul>
-          <li><a href="#">Aviso legal</a></li>
-          <li><a href="#">Política de cookies</a></li>
-          <li><a href="#">Política de privacidad</a></li>
-          <li><a href="#">Protección de datos</a></li>
-          <li><a href="#">Condiciones de contratación</a></li>
+          <li>Aviso legal</li>
+          <li>Política de cookies</li>
+          <li>Política de privacidad</li>
+          <li>Protección de datos</li>
+          <li>Condiciones de contratación</li>
         </ul>
-      </nav>
-      <nav class="footer-column" aria-labelledby="footer-info">
+      </div>
+      <div class="footer-column">
         <h2 id="footer-info">Información</h2>
         <ul>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contacto</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#">Gift Card</a></li>
-          <li><a href="#">Puntos de venta</a></li>
+          <li>About</li>
+          <li>Contacto</li>
+          <li>FAQ</li>
+          <li>Gift Card</li>
+          <li>Puntos de venta</li>
         </ul>
-      </nav>
+      </div>
     </div>
   </footer>
 </div>
