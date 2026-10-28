@@ -591,7 +591,7 @@
     .panel-legal + .privacy-note { margin-top: 12px; justify-content: flex-start; text-align: left; }
 
     /* =========================================================
-       14. Bolsa de compra y favoritos (cajón lateral)
+       14. Carrito y favoritos (cajón lateral)
        ========================================================= */
     .drawer {
       margin: 0 0 0 auto; width: min(440px, 100%); height: 100%; max-height: none; padding: 0; border: 0;
@@ -813,7 +813,7 @@
         <button class="icon-button" type="button" data-open-drawer="favs" aria-label="Favoritos">
           <svg class="icon"><use href="#i-heart"/></svg><span class="badge" data-fav-count></span>
         </button>
-        <button class="icon-button" type="button" data-open-drawer="cart" aria-label="Tu bolsa">
+        <button class="icon-button" type="button" data-open-drawer="cart" aria-label="Tu carrito">
           <svg class="icon"><use href="#i-bag"/></svg><span class="badge" data-cart-count></span>
         </button>
         <a class="button button-brand" href="#probador" data-open-tryon>Probarme un bolso</a>
@@ -1042,7 +1042,7 @@
         <button type="button" data-mode="mannequin" aria-pressed="false"><svg class="icon"><use href="#i-mannequin"/></svg>Maniquí<span class="label-long">&nbsp;3D</span></button>
       </div>
       <div class="toolbar-end">
-        <button class="icon-button" type="button" data-open-drawer="cart" aria-label="Tu bolsa">
+        <button class="icon-button" type="button" data-open-drawer="cart" aria-label="Tu carrito">
           <svg class="icon"><use href="#i-bag"/></svg><span class="badge" data-cart-count></span>
         </button>
         <button class="icon-button tryon-close" type="button" data-close-tryon aria-label="Cerrar el probador"><svg class="icon"><use href="#i-close"/></svg></button>
@@ -1169,7 +1169,7 @@
 
         <div class="buy-bar">
           <div class="buy-row">
-            <button class="button button-brand" type="button" data-action="add-to-cart"><span>Añadir a la bolsa</span><span class="arrow"><svg class="icon"><use href="#i-arrow-right"/></svg></span></button>
+            <button class="button button-brand" type="button" data-action="add-to-cart"><span>Añadir al carrito</span><span class="arrow"><svg class="icon"><use href="#i-arrow-right"/></svg></span></button>
             <button class="icon-button" type="button" data-action="toggle-fav" aria-pressed="false" aria-label="Guardar en favoritos"><svg class="icon"><use href="#i-heart"/></svg></button>
           </div>
           <p class="buy-meta"><svg class="icon" style="width:15px;height:15px"><use href="#i-truck"/></svg><span id="buy-meta">Envío gratis en península a partir de 150 €</span></p>
@@ -1179,13 +1179,13 @@
   </div>
 </dialog>
 
-<!-- ===================== BOLSA Y FAVORITOS ===================== -->
+<!-- ===================== CARRITO Y FAVORITOS ===================== -->
 <dialog class="drawer" id="drawer" aria-labelledby="drawer-title">
   <div class="drawer-shell">
     <div class="drawer-head">
-      <h2 class="visually-hidden" id="drawer-title">Tu bolsa y favoritos</h2>
+      <h2 class="visually-hidden" id="drawer-title">Tu carrito y favoritos</h2>
       <div class="drawer-tabs" role="tablist">
-        <button type="button" role="tab" data-tab="cart" aria-selected="true">Tu bolsa <span data-cart-count-text></span></button>
+        <button type="button" role="tab" data-tab="cart" aria-selected="true">Tu carrito <span data-cart-count-text></span></button>
         <button type="button" role="tab" data-tab="favs" aria-selected="false">Favoritos <span data-fav-count-text></span></button>
       </div>
       <button class="icon-button" type="button" data-close-drawer aria-label="Cerrar"><svg class="icon"><use href="#i-close"/></svg></button>
@@ -1305,7 +1305,7 @@ const formatPrice = n => new Intl.NumberFormat('es-ES', { style: 'currency', cur
 const icon = (name, cls = 'icon') => `<svg class="${cls}"><use href="#i-${name}"/></svg>`;
 
 /* =====================================================================
-   2. BOLSA DE COMPRA Y FAVORITOS (se guardan solo en este navegador)
+   2. CARRITO Y FAVORITOS (se guardan solo en este navegador)
    ===================================================================== */
 const Store = (() => {
   const KEYS = { cart: 'itslava:cart', favs: 'itslava:favs' };
@@ -1379,7 +1379,7 @@ const Toast = (() => {
 function addToCart(id) {
   const product = getProduct(id);
   Store.add(id);
-  Toast.show(`${product.name} añadido a tu bolsa`, 'Ver bolsa', () => Drawer.open('cart'));
+  Toast.show(`${product.name} añadido al carrito`, 'Ver carrito', () => Drawer.open('cart'));
 }
 
 function toggleFav(id) {
@@ -1426,7 +1426,7 @@ const Drawer = (() => {
     if (tab === 'cart') {
       const subtotal = Store.subtotal();
       if (!Store.cart.length) {
-        body.innerHTML = `<div class="drawer-empty">${icon('bag')}<p>Tu bolsa está vacía.</p><button class="button button-brand" type="button" data-open-tryon>Probarme un bolso</button></div>`;
+        body.innerHTML = `<div class="drawer-empty">${icon('bag')}<p>Tu carrito está vacío.</p><button class="button button-brand" type="button" data-open-tryon>Probarme un bolso</button></div>`;
         foot.hidden = true;
         return;
       }
@@ -1510,7 +1510,7 @@ function renderNewIn() {
       </div>
       <div class="product-actions">
         <a class="button button-brand" href="#probador=${p.id}" data-open-tryon="${p.id}">Probártelo <span class="arrow">${icon('arrow-right')}</span></a>
-        <button class="icon-button" type="button" data-add="${p.id}" aria-label="Añadir ${p.name} a la bolsa" style="width:46px;height:46px">${icon('bag')}</button>
+        <button class="icon-button" type="button" data-add="${p.id}" aria-label="Añadir ${p.name} al carrito" style="width:46px;height:46px">${icon('bag')}</button>
       </div>
     </article>`).join('');
 }
