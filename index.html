@@ -372,18 +372,16 @@
     /* =========================================================
        12. Pie
        ========================================================= */
-    .site-footer { background: var(--white); color: var(--ink-2); border-top: 1px solid var(--line); }
-    .footer-cta { display: flex; justify-content: space-between; align-items: center; gap: 32px; padding: 60px 0 44px; border-bottom: 1px solid var(--line); }
-    .footer-cta h2 { font-family: var(--serif); font-weight: 600; font-variation-settings: "SOFT" 0, "WONK" 0; font-size: clamp(32px, 3.8vw, 50px); line-height: 1.05; letter-spacing: -.015em; color: var(--brand); max-width: 640px; }
-    .footer-top { padding: 44px 0; }
-    .footer-brand img { width: 128px; filter: brightness(0); }
-    .footer-brand p { margin-top: 18px; font-size: 14px; max-width: 300px; color: var(--muted); }
-    .footer-bottom {
-      display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 64px;
-      border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted);
-    }
-    .payments { display: flex; flex-wrap: wrap; gap: 6px; }
-    .payments span { padding: 4px 8px; border-radius: 4px; border: 1px solid var(--line-strong); font-size: 11px; font-weight: 600; color: var(--muted); }
+    /* Igual que el pie de la tienda: logo y dos columnas de enlaces en los extremos, tipografía sencilla y mucho aire */
+    .site-footer { background: var(--white); color: #6b6b6b; border-top: 1px solid var(--line); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+    .footer-inner { display: grid; grid-template-columns: auto auto; justify-content: space-between; gap: 40px 64px; padding: 44px 0 64px; }
+    .footer-logo { grid-column: 1 / -1; }
+    .footer-logo img { width: 104px; margin-left: -8px; filter: brightness(0); }  /* compensa el margen interno del logo */
+    .footer-column { min-width: 180px; }
+    .footer-column h2 { margin-bottom: 22px; font-size: 13px; font-weight: 600; line-height: 1.2; color: #111; }
+    .footer-column ul { display: grid; gap: 13px; }
+    .footer-column a { font-size: 12.5px; line-height: 1.2; color: #6b6b6b; transition: color .2s; }
+    .footer-column a:hover { color: #111; }
 
     /* =========================================================
        13. Probador virtual (diálogo a pantalla completa)
@@ -726,8 +724,8 @@
       .community-track { grid-auto-columns: calc((100% - 12px) / 2); gap: 12px; margin-top: 28px; }
       .faq-list summary { font-size: 15px; padding: 0 16px; }
       .faq-list details p { padding: 0 16px 18px; }
-      .footer-cta { flex-direction: column; align-items: flex-start; padding: 44px 0 32px; }
-      .footer-top { padding: 32px 0; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px 24px; padding: 36px 0 48px; }
+      .footer-column { min-width: 0; }
 
       .tryon-toolbar { grid-template-columns: auto 1fr auto; gap: 6px; }
       .mode-switch { justify-self: center; }
@@ -1003,21 +1001,28 @@
 
   <!-- ===================== PIE ===================== -->
   <footer class="site-footer">
-    <div class="container footer-cta">
-      <h2>Pruébatelo antes de llevártelo.</h2>
-      <a class="button" href="#probador" data-open-tryon>Abrir el probador <span class="arrow"><svg class="icon"><use href="#i-arrow-right"/></svg></span></a>
-    </div>
-    <div class="container footer-top">
-      <div class="footer-brand">
-        <img src="img/logo-its-lava.webp" alt="it's lava" width="554" height="213">
-        <p>Prueba. Compara. Elige con confianza.</p>
-      </div>
-    </div>
-    <div class="container footer-bottom">
-      <span>© 2026 it's lava</span>
-      <div class="payments" aria-label="Métodos de pago">
-        <span>Visa</span><span>Mastercard</span><span>Apple Pay</span><span>Google Pay</span><span>Bizum</span><span>Shop Pay</span>
-      </div>
+    <div class="container footer-inner">
+      <div class="footer-logo"><img src="img/logo-its-lava.webp" alt="it's lava" width="554" height="213"></div>
+      <nav class="footer-column" aria-labelledby="footer-legal">
+        <h2 id="footer-legal">It's Lava</h2>
+        <ul>
+          <li><a href="#">Aviso legal</a></li>
+          <li><a href="#">Política de cookies</a></li>
+          <li><a href="#">Política de privacidad</a></li>
+          <li><a href="#">Protección de datos</a></li>
+          <li><a href="#">Condiciones de contratación</a></li>
+        </ul>
+      </nav>
+      <nav class="footer-column" aria-labelledby="footer-info">
+        <h2 id="footer-info">Información</h2>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contacto</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Gift Card</a></li>
+          <li><a href="#">Puntos de venta</a></li>
+        </ul>
+      </nav>
     </div>
   </footer>
 </div>
