@@ -1557,6 +1557,8 @@ const CLOSING_PHOTOS = [
 ];
 
 function renderClosing() {
+  // Mientras no haya ninguna foto, la fila no se muestra
+  $('#closing-photos').hidden = !CLOSING_PHOTOS.some(photo => photo.src);
   $('#closing-photos').innerHTML = CLOSING_PHOTOS.map(photo => photo.src
     ? `<figure class="closing-photo"><img src="${photo.src}" alt="${photo.alt}" loading="lazy"></figure>`
     : '<figure class="closing-photo is-empty" aria-hidden="true"></figure>'
