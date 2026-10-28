@@ -282,6 +282,7 @@
     .product-media > a { display: block; width: 100%; height: 100%; }
     .product-media img { width: 100%; height: 100%; object-fit: contain; padding: 8%; transition: transform .6s var(--ease); }
     .product-card:hover .product-media img { transform: scale(1.04); }
+    .new-in-section .product-media { background: #f1f1f1; }   /* mismo gris que el fondo de las fotos */
     .product-media .pill {
       position: absolute; top: 14px; left: 14px; padding: 6px 10px; border-radius: 999px;
       background: var(--white); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
@@ -1300,7 +1301,9 @@ const COLLECTION = [
   }
 ];
 
-/* Productos de la sección New in (en este orden) */
+/* Productos de la sección New in (en este orden).
+   Sus fotos están en img/bolsos/new-in/<id>.webp, recortadas al contorno del bolso
+   para que todos se vean al mismo tamaño. */
 const NEW_IN = ['mauna-chain-black', 'musa-tricolor-garnet', 'bailey-pink'];
 
 /* Un producto = un color concreto */
@@ -1511,7 +1514,7 @@ function renderNewIn() {
     <article class="product-card reveal">
       <div class="product-media">
         <a href="#probador=${p.id}" data-open-tryon="${p.id}" data-open-mode="mannequin" aria-label="Ver ${p.name} en el maniquí 3D">
-          <img src="${p.images.catalog}" alt="Bolso ${p.name} de it's lava" loading="lazy" width="600" height="750">
+          <img src="img/bolsos/new-in/${p.id}.webp" alt="Bolso ${p.name} de it's lava" loading="lazy">
         </a>
         <span class="pill">Nuevo</span>
         <button class="icon-button" type="button" data-fav="${p.id}" aria-pressed="false" aria-label="Guardar en favoritos">${icon('heart')}</button>
