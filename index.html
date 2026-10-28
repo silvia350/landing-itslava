@@ -307,22 +307,25 @@
     /* =========================================================
        9. Newsletter
        ========================================================= */
-    .newsletter { padding: 64px 0; background: var(--brand-deep); color: var(--white); position: relative; overflow: hidden; }
-    .newsletter::after {
-      content: ""; position: absolute; right: -120px; top: -160px; width: 420px; height: 420px; border-radius: 50%;
-      background: radial-gradient(circle, rgb(255 255 255 / .16), transparent 70%); pointer-events: none;
+    /* Franja rosa a todo el ancho: título y texto a la izquierda, formulario a la derecha */
+    .newsletter { padding: 56px 0; background: var(--brand); color: var(--white); }
+    .newsletter-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 64px; }
+    .newsletter h2 {
+      font-family: var(--serif); font-weight: 600; font-variation-settings: "SOFT" 0, "WONK" 0;
+      font-size: clamp(24px, 2.5vw, 34px); line-height: 1.15; letter-spacing: .12em; text-transform: uppercase; color: var(--white);
     }
-    .newsletter-grid { position: relative; display: grid; grid-template-columns: 1fr .95fr; align-items: center; gap: 80px; }
-    .newsletter h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.05; }
-    .newsletter .eyebrow { color: rgb(255 255 255 / .8); }
-    .newsletter p.lead { margin-top: 12px; font-size: 16px; color: rgb(255 255 255 / .82); max-width: 460px; }
+    .newsletter p.lead { margin-top: 14px; font-size: 16px; line-height: 1.55; color: var(--white); max-width: 460px; }
     .newsletter label[for="email"] { display: block; margin-bottom: 10px; font-size: 13px; font-weight: 600; }
-    .input-row { display: flex; gap: 8px; padding: 6px; border-radius: 999px; background: var(--white); }
-    .input-row input { flex: 1; min-width: 0; height: 48px; padding: 0 18px; color: var(--ink); border-radius: 999px; }
+    .input-row { display: flex; }
+    .input-row input {
+      flex: 1; min-width: 0; height: 52px; padding: 0 16px; color: var(--ink); background: var(--white);
+      border-radius: var(--radius-btn) 0 0 var(--radius-btn);
+    }
+    .input-row input::placeholder { color: var(--muted); }
     .input-row input:focus { outline: none; }
-    .input-row:focus-within { box-shadow: 0 0 0 3px rgb(255 255 255 / .45); }
-    .input-row .button { min-height: 48px; }
-    .consent { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; font-size: 12.5px; line-height: 1.5; color: rgb(255 255 255 / .85); }
+    .input-row:focus-within { box-shadow: 0 0 0 3px rgb(255 255 255 / .45); border-radius: var(--radius-btn); }
+    .input-row .button { min-height: 52px; border-radius: 0 var(--radius-btn) var(--radius-btn) 0; }
+    .consent { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; font-size: 12.5px; line-height: 1.5; color: var(--white); }
     .consent input { margin-top: 2px; accent-color: var(--ink); width: 16px; height: 16px; flex: none; }
     .consent a { text-decoration: underline; }
     .form-message { margin-top: 12px; font-size: 13px; }
@@ -709,8 +712,8 @@
       .new-in-track { grid-auto-columns: 82%; gap: 14px; margin-top: 32px; }
       .quick-try { display: none; }
       .newsletter { padding: 52px 0; }
-      .input-row { flex-direction: column; border-radius: var(--radius); }
-      .input-row input { height: 50px; }
+      .input-row { flex-direction: column; gap: 8px; }
+      .input-row input, .input-row .button { border-radius: var(--radius-btn); }
       .community-grid a:nth-child(2), .community-grid a:nth-child(5) { transform: none; }
       .faq-list summary { font-size: 15px; padding: 0 16px; }
       .faq-list details p { padding: 0 16px 18px; }
@@ -921,23 +924,19 @@
     <section class="newsletter" id="suscripcion" aria-labelledby="newsletter-title">
       <div class="container newsletter-grid">
         <div>
-          <p class="eyebrow">Novedades y lanzamientos</p>
-          <h2 id="newsletter-title">Sé la primera en probarte lo nuevo</h2>
+          <h2 id="newsletter-title">Novedades y lanzamientos</h2>
           <p class="lead">Suscríbete a la newsletter de it's lava para recibir lanzamientos y ofertas exclusivas.</p>
         </div>
-        <!-- Formulario de newsletter de la tienda Shopify de it's lava: abre itslava.es para confirmar el alta -->
-        <form id="newsletter-form" method="post" action="https://itslava.es/contact#contact_form" target="_blank" accept-charset="UTF-8" novalidate>
-          <input type="hidden" name="form_type" value="customer">
-          <input type="hidden" name="utf8" value="✓">
-          <input type="hidden" name="contact[tags]" value="newsletter,probador-virtual">
+        <!-- Formulario de demostración: no envía datos a ningún sitio -->
+        <form id="newsletter-form" novalidate>
           <label for="email">Tu email</label>
           <div class="input-row">
-            <input id="email" name="contact[email]" type="email" placeholder="nombre@email.com" autocomplete="email" required>
-            <button class="button" type="submit">Quiero estar al día</button>
+            <input id="email" name="email" type="email" placeholder="nombre@email.com" autocomplete="email" required>
+            <button class="button" type="submit">Quiero estar al día →</button>
           </div>
           <label class="consent">
             <input type="checkbox" name="consent" required>
-            <span>Acepto recibir comunicaciones de it's lava y he leído la <a href="https://itslava.es/pages/politica-de-privacidad" target="_blank" rel="noopener">política de privacidad</a>.</span>
+            <span>Acepto recibir comunicaciones y he leído la <a href="#">política de privacidad</a>.</span>
           </label>
           <p class="form-message" id="form-message" role="status" hidden></p>
         </form>
@@ -1580,19 +1579,18 @@ function setupReveal() {
   items.forEach(el => io.observe(el));
 }
 
-/* El alta se confirma en la tienda Shopify (se abre en otra pestaña) */
+/* Formulario de demostración: no envía datos ni redirige a ningún sitio */
 function setupNewsletter() {
   const form = $('#newsletter-form');
   const message = $('#form-message');
   form.addEventListener('submit', e => {
-    if (!form.checkValidity()) {
-      e.preventDefault();
-      form.reportValidity();
-      return;
-    }
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    form.reset();
     message.hidden = false;
-    message.textContent = 'Te hemos abierto itslava.es en otra pestaña para completar la suscripción.';
+    message.textContent = '¡Gracias! Te avisaremos de las novedades.';
   });
+  $('.consent a', form).addEventListener('click', e => e.preventDefault());
 }
 
 /* =====================================================================
