@@ -1268,7 +1268,7 @@ const COLLECTION = [
         description: ['Bolso estilo <em>shopper</em> todoterreno, cuenta con dos asas de 150 cm regulables con un nudo en cada lateral que se pueden quitar y sustituir por otras.', 'En el interior lleva un bolsillo con cremallera mientras que en el exterior cuenta con una rendija para introducir el asa de la maleta con otro bolsillo con cremallera.', 'De material sintético impermeable. Debido al material de fabricación las esquinas de la base pueden dañarse levemente con el uso.'] },
       { id: 'mauna-chain-black', name: 'Mauna Chain Black', type: 'Bolso shopper', swatch: '#262626',
         description: ['¡Nuevo Mauna Chain!', 'El bolso Mauna estilo <em>shopper</em> cuenta con un asa de cadena con acolchado en la parte superior para una mayor comodidad. Con un cierre de botón imantado.', 'En el interior lleva un bolsillo con cremallera mientras que en el exterior cuenta con una rendija para introducir el asa de la maleta con otro bolsillo con cremallera.'] },
-      { id: 'mauna-chain', name: 'Mauna Chain', swatch: '#53403e',
+      { id: 'mauna-chain', name: 'Mauna Chain Brown', color: 'Brown', swatch: '#53403e',
         description: ['¡Nuevo Mauna Chain!', 'El bolso Mauna estilo <em>shopper</em> cuenta con un asa de cadena con acolchado en la parte superior para una mayor comodidad. Con un cierre de botón imantado.', 'En el interior lleva un bolsillo con cremallera mientras que en el exterior cuenta con una rendija para introducir el asa de la maleta con otro bolsillo con cremallera.'] }
     ]
   },
@@ -1307,7 +1307,7 @@ const NEW_IN = ['mauna-chain-black', 'musa-tricolor-garnet', 'bailey-pink'];
 const PRODUCTS = COLLECTION.flatMap(family => family.variants.map(v => ({
   ...v,
   family,
-  color: v.name.replace(family.name, '').trim(),
+  color: v.color ?? v.name.replace(family.name, '').trim(),
   type: v.type ?? family.type,
   price: v.price ?? family.price,
   images: { catalog: `img/bolsos/${v.id}.png`, cutout: `img/bolsos/recortes/${v.id}.png` },
