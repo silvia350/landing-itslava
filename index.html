@@ -372,14 +372,11 @@
     /* =========================================================
        12. Pie
        ========================================================= */
-    /* Cierre: título y botón centrados sobre una fila de fotos del mismo tamaño */
-    .closing-section { background: var(--white); text-align: center; }
-    .closing-section .section-heading h2 { margin-bottom: 24px; }
-    .closing-section .button { box-shadow: none; }
-    .closing-photos { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 44px; }
-    .closing-photo { aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius-md); background: var(--photo-bg); }
-    .closing-photo img { width: 100%; height: 100%; object-fit: cover; }
-    .closing-photo.is-empty { border: 1.5px dashed var(--line-strong); background: var(--soft); }
+    /* Cierre: título a la izquierda y botón a la derecha, en una sola fila */
+    .closing-section { background: var(--white); }
+    .closing-row { display: flex; justify-content: space-between; align-items: center; gap: 32px; }
+    .closing-section .section-heading { max-width: none; }
+    .closing-section .button { flex: none; box-shadow: none; }
 
     /* Igual que el pie de la tienda: logo y dos columnas de enlaces en los extremos, tipografía sencilla y mucho aire */
     .site-footer { background: var(--white); color: #6b6b6b; border-top: 1px solid var(--line); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
@@ -734,7 +731,7 @@
       .faq-list summary { font-size: 15px; padding: 0 16px; }
       .faq-list details p { padding: 0 16px 18px; }
       .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px 24px; padding: 36px 0 48px; }
-      .closing-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 32px; }
+      .closing-row { flex-direction: column; align-items: flex-start; gap: 24px; }
       .footer-column { min-width: 0; }
 
       .tryon-toolbar { grid-template-columns: auto 1fr auto; gap: 6px; }
@@ -1010,12 +1007,11 @@
 
     <!-- ===================== CIERRE ===================== -->
     <section class="section closing-section" id="cierre" aria-labelledby="closing-title">
-      <div class="container">
-        <div class="section-heading centered reveal">
+      <div class="container closing-row reveal">
+        <div class="section-heading">
           <h2 id="closing-title">Encuentra tu bolso perfecto</h2>
-          <a class="button button-brand" href="#probador" data-open-tryon>Probar un bolso</a>
         </div>
-        <div class="closing-photos reveal" id="closing-photos"></div>
+        <a class="button button-brand" href="#probador" data-open-tryon>Probar un bolso</a>
       </div>
     </section>
   </main>
@@ -1549,21 +1545,6 @@ const COMMUNITY_PHOTOS = [
   { src: 'img/comunidad/clienta-7.webp', alt: 'Tres clientas, dos de ellas con el bolso Mauna Carey', focus: 'center 55%' },
   { src: 'img/comunidad/clienta-8.webp', alt: 'Clienta haciéndose una foto en el espejo con un bolso marrón al hombro', focus: 'center 65%' }
 ];
-
-/* Fotos de la sección de cierre (personas probándose un bolso), guardadas en img/cierre/.
-   Todas se muestran al mismo tamaño; con src vacío se ve un marco de reserva. */
-const CLOSING_PHOTOS = [
-  { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }
-];
-
-function renderClosing() {
-  // Mientras no haya ninguna foto, la fila no se muestra
-  $('#closing-photos').hidden = !CLOSING_PHOTOS.some(photo => photo.src);
-  $('#closing-photos').innerHTML = CLOSING_PHOTOS.map(photo => photo.src
-    ? `<figure class="closing-photo"><img src="${photo.src}" alt="${photo.alt}" loading="lazy"></figure>`
-    : '<figure class="closing-photo is-empty" aria-hidden="true"></figure>'
-  ).join('');
-}
 
 function renderCommunity() {
   $('#community-track').innerHTML = COMMUNITY_PHOTOS.map((photo, i) => photo.src
@@ -2864,7 +2845,6 @@ const TryOn = (() => {
    ===================================================================== */
 renderNewIn();
 renderCommunity();
-renderClosing();
 setupCarousel($('#community-track'), $('[data-community-scroll="-1"]'), $('[data-community-scroll="1"]'));
 setupHeader();
 setupNewsletter();
