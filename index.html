@@ -2233,9 +2233,9 @@ const TryOn = (() => {
   const filePicker = Object.assign(document.createElement('input'), { type: 'file', accept: 'image/*', hidden: true });
   dialog.append(filePicker);
 
-  const state = {
+  const initialState = () => ({
     productId: PRODUCTS[0].id,
-    carry: 'shoulder',
+    carry: PRODUCTS[0].family.wear[0],
     mode: 'start',          // 'start' | 'camera' | 'photo' | 'mannequin'
     view: 'worn',           // maniquí: 'worn' | 'solo'
     facing: 'user',
@@ -2245,11 +2245,12 @@ const TryOn = (() => {
     auto: true,
     showBag: true,
     adj: { dx: 0, dy: 0, scale: 1, yaw: 0, side: 1 }
-  };
+  });
+  const state = initialState();
   const track = { kp: null, target: null, lastSeen: 0, detected: false, landmarker: null };
 
   let layer = null, layerReady = null, box = null, placement = null;
-  let mannequin = null, mannequinReady = null;
+  let mannequin = null, mannequinReady = null, mannequinLoaded = false;
   let raf = 0, lastVideoTime = -1, statusKey = '', cameraToken = 0;
 
   /* ---------- Panel de producto ---------- */
@@ -2400,10 +2401,17 @@ const TryOn = (() => {
     fitFrame();
   }
 
-  async function setMode(mode) {
+  /* Para la cámara y el maniquí y limpia avisos y cargas.
+     Lo usan la flecha de volver a las opciones y la cruz de cerrar. */
+  function stopStage(keep) {
     showError('');
-    if (mode !== 'camera') stopCamera();
-    if (mode !== 'mannequin') mannequin?.stop();
+    if (keep !== 'camera') stopCamera();
+    if (keep !== 'mannequin') mannequin?.stop();
+    setLoading('');
+  }
+
+  async function setMode(mode) {
+    stopStage(mode);
     if (mode === 'photo' && !state.photoURL) { filePicker.click(); return; }
     state.mode = mode;
     if (mode === 'photo') state.aspect = photo.naturalWidth / photo.naturalHeight;
@@ -2419,8 +2427,7 @@ const TryOn = (() => {
       showError('Tu navegador no puede mostrar el maniquí 3D. Prueba con la cámara o con una foto.');
       return;
     }
-    const first = !mannequin;
-    if (first) setLoading('Preparando el maniquí 3D…');
+    if (!mannequinLoaded) setLoading('Preparando el maniquí 3D…');
     try {
       mannequinReady ||= (async () => {
         mannequin = new MannequinView(els.mannequin);
@@ -2429,6 +2436,7 @@ const TryOn = (() => {
         await mannequin.setProduct(getProduct(state.productId));
       })();
       await mannequinReady;
+      mannequinLoaded = true;
     } catch (err) {
       console.error(err);
       mannequinReady = null;
@@ -2735,6 +2743,46 @@ const TryOn = (() => {
     });
   }
 
+  /* ---------- Reinicio al cerrar con la cruz ----------
+     Antes, al cerrar solo se paraban la cámara y el maniquí, pero el modo seguía
+     siendo «maniquí» o «foto»: al volver a abrir se mostraba la escena anterior
+     con el maniquí parado, que ya no se redibujaba al elegir otro bolso. Ahora
+     se deja todo como la primera vez. Los motores 3D ya cargados se reutilizan
+     (solo cambian de bolso) y el carrito y los favoritos no se tocan. */
+  function reset() {
+    stopStage();
+    if (state.photoURL) URL.revokeObjectURL(state.photoURL);
+    photo.onload = photo.onerror = null;   // una foto que aún se estuviera leyendo ya no se aplica
+    photo.removeAttribute('src');
+    $$('[data-photo-input]').forEach(i => { i.value = ''; });
+    filePicker.value = '';
+    Object.assign(state, initialState());
+    Object.assign(track, { kp: null, target: null, lastSeen: 0, detected: false });
+    placement = null;
+    statusKey = '';
+    setStatus('loading', 'Preparando…');
+    setShowBag(true);
+    els.auto.setAttribute('aria-checked', 'true');
+    syncAdjust();
+    els.adjust.open = false;
+    $$('[data-view]', dialog).forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === 'worn')));
+    els.ar.hidden = true;
+    els.description.classList.add('is-clamped');
+    els.descToggle.textContent = 'Leer más';
+    els.descToggle.setAttribute('aria-expanded', 'false');
+    $('.tryon-panel', dialog).scrollTop = 0;
+    dialog.scrollTop = 0;
+    renderProduct();
+    render();
+    // Los motores ya cargados pasan al bolso inicial para que nada quede del anterior
+    if (layer) loadBagIntoLayer().catch(() => {});
+    if (mannequin) {
+      mannequin.carry = state.carry;
+      mannequin.setView('worn');
+      mannequin.setProduct(getProduct(state.productId)).catch(() => {});
+    }
+  }
+
   /* ---------- Abrir / cerrar ---------- */
   function open(productId, mode) {
     if (!dialog.open) dialog.showModal();
@@ -2812,10 +2860,8 @@ const TryOn = (() => {
     });
 
     dialog.addEventListener('close', () => {
-      // La cámara nunca queda encendida con el probador cerrado
-      stopCamera();
-      mannequin?.stop();
-      if (state.mode === 'camera') state.mode = state.photoURL ? 'photo' : 'start';
+      // La cámara nunca queda encendida y el probador vuelve a su estado inicial
+      reset();
       if (location.hash.startsWith('#probador')) history.replaceState(null, '', location.pathname + location.search);
     });
     // Si la pestaña pasa a segundo plano se apaga la cámara; al volver se reanuda
