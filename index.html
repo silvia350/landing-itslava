@@ -302,8 +302,6 @@
     .product-actions { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 16px; }
     .product-actions .button { min-height: 46px; font-size: 14px; padding: 0 18px; }
     .new-in-section .button, .new-in-section .icon-button { box-shadow: none; }
-    .swatch-mini { display: flex; gap: 6px; margin-top: 10px; }
-    .swatch-mini span { width: 14px; height: 14px; border-radius: 50%; background: var(--swatch); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .12); }
 
     /* =========================================================
        9. Newsletter
@@ -1524,7 +1522,6 @@ function renderNewIn() {
         <div>
           <h3>${p.name}</h3>
           <p class="meta">${p.type}</p>
-          <div class="swatch-mini" aria-label="${p.family.variants.length} colores">${p.family.variants.map(v => `<span style="--swatch:${v.swatch}" title="${v.name}"></span>`).join('')}</div>
         </div>
         <p class="price">${formatPrice(p.price)}</p>
       </div>
