@@ -300,6 +300,7 @@
     .product-info .price { font-size: 16px; font-weight: 700; white-space: nowrap; }
     .product-actions { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 16px; }
     .product-actions .button { min-height: 46px; font-size: 14px; padding: 0 18px; }
+    .new-in-section .button, .new-in-section .icon-button { box-shadow: none; }
     .swatch-mini { display: flex; gap: 6px; margin-top: 10px; }
     .swatch-mini span { width: 14px; height: 14px; border-radius: 50%; background: var(--swatch); box-shadow: inset 0 0 0 1px rgb(0 0 0 / .12); }
 
@@ -909,12 +910,7 @@
       <div class="container">
         <div class="new-in-header reveal">
           <div class="section-heading">
-            <p class="eyebrow">Recién llegados</p>
             <h2 id="new-in-title">New in</h2>
-          </div>
-          <div class="carousel-controls" role="group" aria-label="Navegar por los nuevos modelos">
-            <button type="button" data-scroll="-1" aria-label="Ver los modelos anteriores"><svg class="icon"><use href="#i-arrow-left"/></svg></button>
-            <button type="button" data-scroll="1" aria-label="Ver los siguientes modelos"><svg class="icon"><use href="#i-arrow-right"/></svg></button>
           </div>
         </div>
         <div class="new-in-track" id="new-in-track"></div>
@@ -1254,7 +1250,7 @@ const COLLECTION = [
         swatch: 'radial-gradient(circle at 30% 35%, #8a5a2b 0 18%, transparent 20%), radial-gradient(circle at 70% 65%, #6b4423 0 15%, transparent 17%), #1f1a17',
         shopify: { handle: 'mauna-carey', variant: 49118168875335 },
         description: ['Bolso estilo <em>shopper</em> todoterreno, cuenta con dos asas de 150 cm regulables con un nudo en cada lateral que se pueden quitar y sustituir por otras.', 'En el interior lleva un bolsillo con cremallera mientras que en el exterior cuenta con una rendija para introducir el asa de la maleta con otro bolsillo con cremallera.', 'De material sintético impermeable. Debido al material de fabricación las esquinas de la base pueden dañarse levemente con el uso.'] },
-      { id: 'mauna-chain-black', name: 'Mauna Chain Black', swatch: '#262626', shopify: { handle: 'mauna-chain-black', variant: 54220825100615 },
+      { id: 'mauna-chain-black', name: 'Mauna Chain Black', type: 'Bolso shopper', swatch: '#262626', shopify: { handle: 'mauna-chain-black', variant: 54220825100615 },
         description: ['¡Nuevo Mauna Chain!', 'El bolso Mauna estilo <em>shopper</em> cuenta con un asa de cadena con acolchado en la parte superior para una mayor comodidad. Con un cierre de botón imantado.', 'En el interior lleva un bolsillo con cremallera mientras que en el exterior cuenta con una rendija para introducir el asa de la maleta con otro bolsillo con cremallera.'] },
       { id: 'mauna-chain', name: 'Mauna Chain', swatch: '#53403e', shopify: { handle: 'mauna-chain-brown', variant: 54221006405959 },
         description: ['¡Nuevo Mauna Chain!', 'El bolso Mauna estilo <em>shopper</em> cuenta con un asa de cadena con acolchado en la parte superior para una mayor comodidad. Con un cierre de botón imantado.', 'En el interior lleva un bolsillo con cremallera mientras que en el exterior cuenta con una rendija para introducir el asa de la maleta con otro bolsillo con cremallera.'] }
@@ -1296,6 +1292,7 @@ const PRODUCTS = COLLECTION.flatMap(family => family.variants.map(v => ({
   ...v,
   family,
   color: v.name.replace(family.name, '').trim(),
+  type: v.type ?? family.type,
   price: v.price ?? family.price,
   url: `${STORE.url}/products/${v.shopify.handle}`,
   images: { catalog: `img/bolsos/${v.id}.png`, cutout: `img/bolsos/recortes/${v.id}.png` },
@@ -1408,7 +1405,7 @@ const Drawer = (() => {
         <a class="line-thumb" href="#probador=${product.id}" data-open-tryon="${product.id}"><img src="${product.images.catalog}" alt="" loading="lazy"></a>
         <div>
           <h3>${product.name}</h3>
-          <p class="meta">${product.family.type}</p>
+          <p class="meta">${product.type}</p>
           <div class="line-actions">
             ${qty ? `
               <div class="qty" role="group" aria-label="Cantidad de ${product.name}">
@@ -1508,7 +1505,7 @@ function renderNewIn() {
       <div class="product-info">
         <div>
           <h3>${p.name}</h3>
-          <p class="meta">${p.family.type}</p>
+          <p class="meta">${p.type}</p>
           <div class="swatch-mini" aria-label="${p.family.variants.length} colores">${p.family.variants.map(v => `<span style="--swatch:${v.swatch}" title="${v.name}"></span>`).join('')}</div>
         </div>
         <p class="price">${formatPrice(p.price)}</p>
@@ -2831,7 +2828,6 @@ const TryOn = (() => {
    ===================================================================== */
 renderNewIn();
 renderCommunity();
-setupCarousel($('#new-in-track'), $('[data-scroll="-1"]'), $('[data-scroll="1"]'));
 setupHeader();
 setupNewsletter();
 setupReveal();
