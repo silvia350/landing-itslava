@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>it's lava · The virtual try-on</title>
-  <meta name="description" content="Pruébate los bolsos de it's lava con la cámara, sobre tu foto o en un maniquí 3D, y cómpralos en itslava.es.">
+  <meta name="description" content="Pruébate los bolsos de it's lava con la cámara, sobre tu foto o en un maniquí 3D.">
   <meta name="theme-color" content="#e82689">
   <meta property="og:title" content="it's lava · The virtual try-on">
   <meta property="og:description" content="Pruébate los bolsos de it's lava con la cámara, sobre tu foto o en un maniquí 3D.">
@@ -2836,6 +2836,8 @@ document.addEventListener('click', e => {
     TryOn.open(tryon.dataset.openTryon || null, tryon.dataset.openMode);
     return;
   }
+  // Enlaces sin destino (href="#"): no navegan a ningún sitio
+  if (e.target.closest('a[href="#"]')) e.preventDefault();
   const drawer = e.target.closest('[data-open-drawer]');
   if (drawer) return Drawer.open(drawer.dataset.openDrawer);
   const add = e.target.closest('[data-add]');
