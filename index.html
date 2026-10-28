@@ -244,7 +244,7 @@
        ========================================================= */
     .steps-section { background: var(--cream); }
     .steps-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 48px; counter-reset: step; }
-    .step { counter-increment: step; }
+    .step { counter-increment: step; text-align: center; }
     .step-photo {
       position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius);
       background: var(--soft); box-shadow: var(--shadow-sm);
@@ -256,9 +256,8 @@
       display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
       background: var(--white); font-size: 13px; font-weight: 700; box-shadow: var(--shadow-sm);
     }
-    .step h3 { margin-top: 22px; font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
+    .step h3 { margin-top: 18px; font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
     .step h3::first-letter { text-transform: uppercase; }
-    .step p { margin-top: 8px; font-size: 15px; line-height: 1.6; color: var(--muted); max-width: 340px; }
     .steps-cta { display: flex; justify-content: center; margin-top: 44px; }
 
     /* =========================================================
@@ -879,7 +878,7 @@
     <section class="section steps-section" id="como-funciona" aria-labelledby="steps-title">
       <div class="container">
         <div class="section-heading centered reveal">
-          <p class="eyebrow">En tres pasos</p>
+          <p class="eyebrow is-muted">En tres pasos</p>
           <h2 id="steps-title">Cómo funciona</h2>
         </div>
         <div class="steps-grid">
@@ -887,19 +886,16 @@
             <!-- Imagen 4 -->
             <div class="step-photo"><img src="img/como-elige-tu-bolso.png" width="700" height="889" loading="lazy" alt="Bolso plateado de it's lava con asa ondulada"></div>
             <h3>elige tu bolso</h3>
-            <p>Escoge modelo y color entre Bailey, Mauna, Musa y Arenal.</p>
           </article>
           <article class="step reveal">
             <!-- Imagen 3 -->
             <div class="step-photo"><img src="img/como-activa-tu-camara.webp" width="1289" height="1600" loading="lazy" alt="Una mano sostiene un móvil con la cámara abierta enfocando a una chica de cuerpo entero"></div>
             <h3>activa tu cámara</h3>
-            <p>Ponte de frente: el bolso se coloca en tu hombro, tu cadera o tu mano y te sigue al moverte.</p>
           </article>
           <article class="step reveal">
             <!-- Imagen 2 -->
             <div class="step-photo"><img src="img/como-descubre-tu-favorito.webp" width="1289" height="1600" loading="lazy" alt="Una chica rodeada por un carrusel de tarjetas con bolsos de la colección"></div>
             <h3>descubre tu favorito</h3>
-            <p>Haz una foto, compara colores y añade a tu bolsa el que más te guste.</p>
           </article>
         </div>
         <div class="steps-cta">
