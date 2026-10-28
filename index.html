@@ -334,7 +334,6 @@
        10. La comunidad
        ========================================================= */
     .community-header { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; }
-    .community-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
     /* Carrusel de fotos de clientas: 4 fotos cuadradas por vista */
     .community-track {
       display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 48px) / 4); gap: 16px;
@@ -342,7 +341,7 @@
     }
     .community-track::-webkit-scrollbar { display: none; }
     .community-photo { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-md); background: var(--photo-bg); scroll-snap-align: start; }
-    .community-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .community-photo img { width: 100%; height: 100%; object-fit: cover; object-position: var(--focus, center); }
     .community-photo.is-empty {
       display: grid; place-content: center; justify-items: center; gap: 8px;
       border: 1.5px dashed var(--line-strong); background: var(--soft); color: var(--muted); font-size: 13px; font-weight: 600;
@@ -959,9 +958,6 @@
           <div class="section-heading">
             <h2 id="social-title">#WeWereLava</h2>
             <p class="section-copy">Así llevan nuestras clientas sus bolsos favoritos. Comparte tu look y forma parte de la comunidad.</p>
-            <div class="community-actions">
-              <a class="button button-ghost" href="#probador" data-open-tryon>Hacer mi prueba</a>
-            </div>
           </div>
           <div class="carousel-controls" role="group" aria-label="Navegar por las fotos de la comunidad">
             <button type="button" data-community-scroll="-1" aria-label="Ver las fotos anteriores"><svg class="icon"><use href="#i-arrow-left"/></svg></button>
@@ -1515,17 +1511,23 @@ function renderNewIn() {
     </article>`).join('');
 }
 
-/* Fotos de clientas (#WeWereLava). Para añadir una foto, guárdala en img/comunidad/
-   y escribe su ruta en src, p. ej. { src: 'img/comunidad/clienta-1.jpg', alt: 'Clienta con el bolso Bailey Pink' }.
-   Mientras src esté vacío se muestra un marco cuadrado de reserva. */
+/* Fotos de clientas (#WeWereLava), guardadas en img/comunidad/.
+   Se recortan en cuadrado; focus indica qué parte de la foto queda visible (para que se vea el bolso).
+   Una entrada con src vacío muestra un marco cuadrado de reserva. */
 const COMMUNITY_PHOTOS = [
-  { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' },
-  { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }, { src: '', alt: '' }
+  { src: 'img/comunidad/clienta-1.webp', alt: 'Clienta con un bolso dorado al hombro', focus: 'center 40%' },
+  { src: 'img/comunidad/clienta-2.webp', alt: 'Clienta con un bolso plateado cruzado', focus: 'center 70%' },
+  { src: 'img/comunidad/clienta-3.webp', alt: 'Clienta de espaldas con un bolso plateado al hombro', focus: 'center 90%' },
+  { src: 'img/comunidad/clienta-4.webp', alt: 'Clienta con un bolso naranja cruzado', focus: 'center 45%' },
+  { src: 'img/comunidad/clienta-5.webp', alt: 'Clienta con un bolso rojo cruzado', focus: 'center 40%' },
+  { src: 'img/comunidad/clienta-6.webp', alt: 'Clienta en una azotea con un bolso negro', focus: 'center 70%' },
+  { src: 'img/comunidad/clienta-7.webp', alt: 'Tres clientas, dos de ellas con el bolso Mauna Carey', focus: 'center 55%' },
+  { src: 'img/comunidad/clienta-8.webp', alt: 'Clienta haciéndose una foto en el espejo con un bolso marrón al hombro', focus: 'center 65%' }
 ];
 
 function renderCommunity() {
   $('#community-track').innerHTML = COMMUNITY_PHOTOS.map((photo, i) => photo.src
-    ? `<figure class="community-photo"><img src="${photo.src}" alt="${photo.alt}" loading="lazy"></figure>`
+    ? `<figure class="community-photo"><img src="${photo.src}" alt="${photo.alt}" loading="lazy" style="--focus:${photo.focus || 'center'}"></figure>`
     : `<figure class="community-photo is-empty" aria-label="Espacio para la foto ${i + 1}">${icon('camera')}<span>Foto ${i + 1}</span></figure>`
   ).join('');
 }
